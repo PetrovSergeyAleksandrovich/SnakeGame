@@ -37,6 +37,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		float MovementSpeed;
 
+	UPROPERTY(EditDefaultsOnly)
+		int quantity_at_start;
+
 	UPROPERTY()
 		TArray<ASnakeElementBase*> SnakeElements;
 
@@ -54,4 +57,7 @@ public:
 	void AddSnakeElement(int ElementsNum = 1);
 
 	void Move();
+
+	UFUNCTION()
+		void SnakeElementOverlap(ASnakeElementBase* OverlappedElement, AActor * Other);
 };
