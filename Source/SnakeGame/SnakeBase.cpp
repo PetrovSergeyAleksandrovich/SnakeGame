@@ -13,6 +13,7 @@ ASnakeBase::ASnakeBase()
 	PrimaryActorTick.bCanEverTick = true;
 	ElementSize = 100.f;
 	MovementSpeed = 10.f;
+	Acceleration = 1.1f;
 	quantity_at_start = 4;
 	LastMoveDirection = EMovementDirection::DOWN;
 }
@@ -28,12 +29,14 @@ void ASnakeBase::BeginPlay()
 // Called every frame
 void ASnakeBase::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(MovementSpeed);
 	Move();
 }
 
 void ASnakeBase::AddSnakeElement(int ElementsNum)
 {
+	auto current_length = SnakeElements.Num();
+
 	for (int i = 0; i < ElementsNum; i++)
 	{
 		FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
@@ -48,8 +51,16 @@ void ASnakeBase::AddSnakeElement(int ElementsNum)
 		}
 	}
 
+	auto prev_length = current_length;
+	current_length = SnakeElements.Num();
+
+	if (current_length > prev_length)
+	{
+		MovementSpeed /= Acceleration;
+		SetActorTickInterval(MovementSpeed);
+	}
 }
- 
+
 void ASnakeBase::Move()
 {
 	FVector MovementVector(0.f, 0.f, 0.f);

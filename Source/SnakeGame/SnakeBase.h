@@ -38,12 +38,15 @@ public:
 		float MovementSpeed;
 
 	UPROPERTY(EditDefaultsOnly)
+		float Acceleration;
+
+	UPROPERTY(EditDefaultsOnly)
 		int quantity_at_start;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 		TArray<ASnakeElementBase*> SnakeElements;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 		EMovementDirection LastMoveDirection;
 
 protected:

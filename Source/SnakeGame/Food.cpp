@@ -26,6 +26,8 @@ void AFood::Tick(float DeltaTime)
 
 }
 
+
+
 void AFood::Interact(AActor* Interactor, bool bIsHead)
 {
 	if (bIsHead)
@@ -37,4 +39,6 @@ void AFood::Interact(AActor* Interactor, bool bIsHead)
 		}
 	}
 }
+
+
 
