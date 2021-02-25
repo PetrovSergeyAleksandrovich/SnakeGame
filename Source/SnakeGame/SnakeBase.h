@@ -43,6 +43,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		int quantity_at_start;
 
+	UPROPERTY(EditDefaultsOnly)
+		bool flag;
+
 	UPROPERTY(BlueprintReadWrite)
 		TArray<ASnakeElementBase*> SnakeElements;
 

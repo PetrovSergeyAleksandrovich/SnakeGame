@@ -35,6 +35,7 @@ void ASnakeElementBase::SetFirstElementType_Implementation()
 	MeshComponent->OnComponentBeginOverlap.AddDynamic(this, &ASnakeElementBase::HandleBeginOverlap);
 }
 
+
 void ASnakeElementBase::Interact(AActor* Interactor, bool bIsHead)
 {
 	auto Snake = Cast<ASnakeBase>(Interactor);
@@ -43,6 +44,7 @@ void ASnakeElementBase::Interact(AActor* Interactor, bool bIsHead)
 		Snake->Destroy();
 	}
 }
+
 
 void ASnakeElementBase::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 											AActor* OtherActor, 
@@ -56,6 +58,7 @@ void ASnakeElementBase::HandleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 		SnakeOwner->SnakeElementOverlap(this, OtherActor);
 	}
 }
+
 
 void ASnakeElementBase::ToggleCollision()
 {

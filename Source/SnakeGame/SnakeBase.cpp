@@ -4,6 +4,7 @@
 #include "SnakeBase.h"
 #include "SnakeElementBase.h"
 #include "Interactable.h"
+#include "Wall.h"
 
 
 // Sets default values
@@ -15,6 +16,7 @@ ASnakeBase::ASnakeBase()
 	MovementSpeed = 10.f;
 	Acceleration = 1.1f;
 	quantity_at_start = 4;
+	flag = false;
 	LastMoveDirection = EMovementDirection::DOWN;
 }
 
@@ -37,34 +39,55 @@ void ASnakeBase::AddSnakeElement(int ElementsNum)
 {
 	auto current_length = SnakeElements.Num();
 
-	for (int i = 0; i < ElementsNum; i++)
-	{
-		FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
-		FTransform NewTransform(NewLocation);
-		ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
-		NewSnakeElem->SnakeOwner = this;
-		int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
-
-		if (ElemIndex == 0)
+	if (!flag) {
+		for (int i = 0; i < ElementsNum; i++)
 		{
-			NewSnakeElem->SetFirstElementType();
+			FVector NewLocation((SnakeElements.Num() * ElementSize), 0, 0);
+			FTransform NewTransform(NewLocation);
+			ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
+			NewSnakeElem->SnakeOwner = this;
+			int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
+
+			if (ElemIndex == 0)
+			{
+				NewSnakeElem->SetFirstElementType();
+			}
 		}
 	}
 
+	if (flag) {
+		for (int i = 0; i < ElementsNum; i++)
+		{
+			FVector NewLocation((SnakeElements.Num() * ElementSize)+1000, 0, 0);
+			FTransform NewTransform(NewLocation);
+			ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
+			NewSnakeElem->SnakeOwner = this;
+			int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
+
+			if (ElemIndex == 0)
+			{
+				NewSnakeElem->SetFirstElementType();
+			}
+		}
+	}
+
+	
 	auto prev_length = current_length;
 	current_length = SnakeElements.Num();
-
 	if (current_length > prev_length)
 	{
 		MovementSpeed /= Acceleration;
 		SetActorTickInterval(MovementSpeed);
 	}
+
+	flag = true;
+
 }
 
 void ASnakeBase::Move()
 {
 	FVector MovementVector(0.f, 0.f, 0.f);
-
+	
 	switch (LastMoveDirection)
 	{
 	case EMovementDirection::UP:
@@ -111,4 +134,3 @@ void ASnakeBase::SnakeElementOverlap(ASnakeElementBase* OverlappedElement, AActo
 		}
 	}
 }
-
